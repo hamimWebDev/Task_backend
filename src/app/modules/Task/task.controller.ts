@@ -21,34 +21,33 @@ const createTask = async (req: Request, res: Response) => {
 };
 
 const getAllTask= catchAsync(async (req, res): Promise<void> => {
-
-  const result = await TaskServices.getAllTask();
+  const result = await TaskServices.getAllTask(req.query);
   sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Products fetched successfully",
+      message: "Tasks fetched successfully",
       data: result    
   });
 });
 
 const getSingleTask = catchAsync(async (req, res): Promise<void> => {
-  const { id } = req.params;
-  const result = await TaskServices.getTaskById(id);
+  const { taskId } = req.params;
+  const result = await TaskServices.getTaskById(taskId);
   sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Single Product fetched successfully",
+      message: "Single Task fetched successfully",
       data: result,
   });
 });
 
 const deleteTask = catchAsync(async (req, res): Promise<void> => {
-  const { id } = req.params;
-  const result = await TaskServices.deleteTaskById(id);
+  const { taskId } = req.params;
+  const result = await TaskServices.deleteTaskById(taskId);
   sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Product deleted successfully",
+      message: "Task deleted successfully",
       data: result,
   });
 });

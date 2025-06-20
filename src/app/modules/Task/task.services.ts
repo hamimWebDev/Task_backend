@@ -1,3 +1,4 @@
+import QueryBuilder from '../../builder/QueryBuilder';
 import { ITask } from './task.interface';
 import { Task } from './task.model';
 
@@ -6,19 +7,36 @@ const createTask = async (taskData: ITask): Promise<ITask> => {
   return task;
 };
 
-const getTaskById = async (taskId: string): Promise<ITask | null> => {
-  return Task.findOne({ taskId });
-};
-const getAllTask= async (): Promise<ITask | null> => {
-  return Task.findOne();
+const getTaskById = async (id: string): Promise<ITask | null> => {
+  return Task.findById(id);
 };
 
-const updateTaskById = async (taskId: string, updateData: Partial<ITask>): Promise<ITask | null> => {
-  return Task.findOneAndUpdate({ taskId }, updateData, { new: true });
+interface IGetAllTaskResponse {
+  meta: any;
+  result: ITask[];
+}
+
+const getAllTask = async (query: Record<string, any>): Promise<IGetAllTaskResponse> => {
+  const productQuery = new QueryBuilder(Task.find(), query)
+    .search(['title'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  const result = await productQuery.modelQuery;
+  const meta = await productQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
 };
 
-const deleteTaskById = async (taskId: string): Promise<ITask | null> => {
-  return Task.findOneAndUpdate({ taskId }, { isDeleted: true }, { new: true });
+const updateTaskById = async (id: string, updateData: Partial<ITask>): Promise<ITask | null> => {
+  return Task.findByIdAndUpdate(id, updateData, { new: true });
+};
+
+const deleteTaskById = async (id: string): Promise<ITask | null> => {
+  return Task.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
 };
 
 export const TaskServices = {
