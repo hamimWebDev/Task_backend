@@ -10,7 +10,7 @@ const app = express();
 // parser
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173", "https://e-commerce-lyart-kappa.vercel.app"],
+    origin: ["http://localhost:5173", "https://task-frontend-sigma.vercel.app/"],
     credentials: true,
 }));
 app.use(cookieParser());

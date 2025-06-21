@@ -17,7 +17,7 @@ interface IGetAllTaskResponse {
 }
 
 const getAllTask = async (query: Record<string, any>): Promise<IGetAllTaskResponse> => {
-  const productQuery = new QueryBuilder(Task.find(), query)
+  const productQuery = new QueryBuilder(Task.find({ isDeleted: false }), query)
     .search(['title'])
     .filter()
     .sort()

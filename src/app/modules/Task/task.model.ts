@@ -5,16 +5,16 @@ const taskSchema = new Schema<ITask>(
   {
    
     title: { type: String, required: true },
-    image: { type: String, required: true },
+    userId: { type: String, required: true },
     description: { type: String, required: true },
     endDate: { type: String, required: true },
     status: {
       type: String,
       required: true,
-      enum: ['Pending', 'In-progress', 'Done', "Ongoing", "Collborative Task"],
+      enum: ['Ongoing', 'Pending', 'InProgress', "Done"],
       default: 'pending'
     },
-    categories: { type: String, required: true, enum: ["Arts and Craft", "Nature", "Family", "Sport", "Friends", "Meditation"] },
+    category: { type: String, required: true, enum: ["Arts and Craft", "Marketing", "Meetings", "Family", "Sport", "Friends", "Meditation"] },
     isDeleted: { type: Boolean, default: false },
   },
   {
@@ -22,10 +22,6 @@ const taskSchema = new Schema<ITask>(
   }
 );
 
-// 👇 Automatically filter out soft-deleted tasks
-taskSchema.pre<Query<any, any>>(/^find/, function (next) {
-  this.where({ isDeleted: false });
-  next();
-});
+
 
 export const Task = model<ITask>('Task', taskSchema);
